@@ -72,7 +72,9 @@ char **parse_line(char *str)
 
 int main(int ac, char *av[])
 {
-	int fd, len;
+	int fd;
+	size_t len = 0;
+	ssize_t line_read;
 	char *line = NULL, **words = NULL;
 
 	if (ac != 2)
@@ -88,7 +90,7 @@ int main(int ac, char *av[])
 		exit(EXIT_FAILURE);
 	}
 
-	while ((read = getline(&line, &len, av[1])) != -1)
+	while ((line_read = getline(&line, &len, av[1])) != -1)
 	{
 		lineno++;
 		words = parse_line(line);
