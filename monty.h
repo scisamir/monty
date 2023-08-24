@@ -1,15 +1,15 @@
-#ifndef __MAIN_H__
-#define __MAIN_H__
+#ifndef __MONTY_H__
+#define __MONTY_H__
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <unistd.h>
 #include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
+int dprintf(int fd, const char *format, ...);
+char *strdup(const char *s);
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -52,4 +52,4 @@ int lineno = 0;
 char **parse_line(char *str);
 int push(int num);
 
-#endif /* __MAIN_H__ */
+#endif /* __MONTY_H__ */

@@ -72,7 +72,7 @@ char **parse_line(char *str)
 
 int main(int ac, char *av[])
 {
-	int fd;
+	FILE *fd;
 	size_t len = 0;
 	ssize_t line_read;
 	char *line = NULL, **words = NULL;
@@ -83,14 +83,14 @@ int main(int ac, char *av[])
 		exit(EXIT_FAILURE);
 	}
 
-	fd = open(av[1], O_RDONLY);
-	if (fd < 0)
+	fd = fopen(av[1], "r");
+	if (fd == NULL)
 	{
 		dprintf(2, "Error: Can't open file <file>\n");
 		exit(EXIT_FAILURE);
 	}
 
-	while ((line_read = getline(&line, &len, av[1])) != -1)
+	while ((line_read = getline(&line, &len, fd)) != -1)
 	{
 		lineno++;
 		words = parse_line(line);
@@ -107,7 +107,8 @@ int main(int ac, char *av[])
 		}
 	}
 
-	close(fd);
-	free(line);
+	fclose(fd);
+	if (line)
+		free(line);
 	exit(EXIT_SUCCESS);
 }
