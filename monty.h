@@ -50,6 +50,6 @@ int lineno = 0;
 
 
 char **parse_line(char *str);
-void push(int num);
+int push(int num);
 
 #endif /* __MAIN_H__ */

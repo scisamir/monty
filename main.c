@@ -9,7 +9,7 @@
 
 char **parse_line(char *str)
 {
-	char *word, str_copy;
+	char *word, *str_copy;
 	char **words;
 	int len = 0, i = 0;
 
