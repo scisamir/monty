@@ -38,23 +38,28 @@ char **parse_line(char *str)
 	}
 	words[i] = NULL;
 	free(str_copy);
-	printf("---------------------\n");
-	i = 0;
-	while (words[i])
-	{
-		printf("%s\n", words[i]);
-		i++;
-	}
-	printf("---------------------\n");
 	return (words);
 }
 
-int check_opcode(char *str, int lineno, stack_t **stack)
+
+/**
+ * check_opcode - checks a specific opcode and executes it's corresponding
+ * function
+ * @str: the opcode
+ * @lineno: the line number currently being read
+ * @stack: the stack
+ *
+ * Return: Nothing
+ */
+
+void check_opcode(char *str, int lineno, stack_t *stack)
 {
 	int i = 0;
 
 	instruction_t opcodes[] = {
 		{"pall", pall},
+		{"pint", pint},
+		{"pop", pop},
 		{NULL, NULL},
 	};
 
@@ -62,8 +67,8 @@ int check_opcode(char *str, int lineno, stack_t **stack)
 	{
 		if (strcmp(opcodes[i].opcode, str) == 0)
 		{
-			(opcodes[i].f)(stack, lineno);
-			exit(EXIT_SUCCESS);
+			(opcodes[i].f)(&stack, lineno);
+			return;
 		}
 		i++;
 	}
@@ -84,7 +89,7 @@ int check_opcode(char *str, int lineno, stack_t **stack)
 int main(int ac, char *av[])
 {
 	FILE *fd;
-	int lineno = 0, i = 0;
+	int lineno = 0/*, i = 0*/;
 	size_t len = 0;
 	ssize_t line_read;
 	char *line = NULL, **words = NULL;
@@ -109,21 +114,10 @@ int main(int ac, char *av[])
 		words = parse_line(line);
 		if (words)
 		{
-			if (strcmp(words[0], "push") == 0 && isdigit(atoi(words[1])))
-				push(atoi(words[1]), &top);
+			if (strcmp(words[0], "push") == 0)
+				push(words[1], &top, lineno);
 			else
-				check_opcode(words[0], lineno, &top);
-		}
-
-		free(line);
-		if (words)
-		{
-			while (words[i])
-			{
-				free(words[i]);
-				i++;
-			}
-			free(words);
+				check_opcode(words[0], lineno, top);
 		}
 	}
 

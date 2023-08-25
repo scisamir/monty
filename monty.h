@@ -6,13 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <sys/types.h>
-
-
-/*ssize_t getline(char **lineptr, size_t *n, FILE *stream);
-int dprintf(int fd, const char *format, ...);
-char *strdup(const char *s);*/
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -52,8 +46,10 @@ typedef struct instruction_s
 
 
 char **parse_line(char *str);
-int check_opcode(char *str, int lineno, stack_t **stack);
-int push(int num, stack_t **stack_top);
+void check_opcode(char *str, int lineno, stack_t *stack);
+int push(char *num_char, stack_t **stack_top, int lineno);
 void pall(stack_t **stack, unsigned int line_number);
+void pint(stack_t **stack, unsigned int line_number);
+void pop(stack_t **stack, unsigned int line_number);
 
 #endif /* __MONTY_H__ */
