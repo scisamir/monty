@@ -38,28 +38,39 @@ char **parse_line(char *str)
 	}
 	words[i] = NULL;
 	free(str_copy);
+	printf("---------------------\n");
+	i = 0;
+	while (words[i])
+	{
+		printf("%s\n", words[i]);
+		i++;
+	}
+	printf("---------------------\n");
 	return (words);
 }
 
-/*int check_opcode(char *str)
+int check_opcode(char *str, int lineno, stack_t **stack)
 {
 	int i = 0;
 
 	instruction_t opcodes[] = {
-		{"pint", pall},
+		{"pall", pall},
 		{NULL, NULL},
 	};
 
-	while (opcodes[i][0])
+	while (opcodes[i].opcode)
 	{
-		if (strcmp(opcodes[i][0], str) == 0)
-			return((opcodes[i].f)(head, lineno));
+		if (strcmp(opcodes[i].opcode, str) == 0)
+		{
+			(opcodes[i].f)(stack, lineno);
+			exit(EXIT_SUCCESS);
+		}
 		i++;
 	}
 
-	dprintf(2, "L%s: unknown instruction %s\n", lineno, str);
+	dprintf(2, "L%d: unknown instruction %s\n", lineno, str);
 	exit(EXIT_FAILURE);
-}*/
+}
 
 
 /**
@@ -73,9 +84,11 @@ char **parse_line(char *str)
 int main(int ac, char *av[])
 {
 	FILE *fd;
+	int lineno = 0, i = 0;
 	size_t len = 0;
 	ssize_t line_read;
 	char *line = NULL, **words = NULL;
+	stack_t *top = NULL;
 
 	if (ac != 2)
 	{
@@ -86,7 +99,7 @@ int main(int ac, char *av[])
 	fd = fopen(av[1], "r");
 	if (fd == NULL)
 	{
-		dprintf(2, "Error: Can't open file <file>\n");
+		dprintf(2, "Error: Can't open file %s\n", av[1]);
 		exit(EXIT_FAILURE);
 	}
 
@@ -97,18 +110,23 @@ int main(int ac, char *av[])
 		if (words)
 		{
 			if (strcmp(words[0], "push") == 0 && isdigit(atoi(words[1])))
-				push(atoi(words[1]));
-			else if (strcmp(words[0], "push") == 0
-				&& (!(isdigit(atoi(words[1]))) || !words[1]))
+				push(atoi(words[1]), &top);
+			else
+				check_opcode(words[0], lineno, &top);
+		}
+
+		free(line);
+		if (words)
+		{
+			while (words[i])
 			{
-				dprintf(2, "L%s: usage: push integer\n", lineno);
-				exit(EXIT_FAILURE);
+				free(words[i]);
+				i++;
 			}
+			free(words);
 		}
 	}
 
 	fclose(fd);
-	if (line)
-		free(line);
 	exit(EXIT_SUCCESS);
 }

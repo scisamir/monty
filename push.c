@@ -7,7 +7,7 @@
  * Return: On Success, EXIT_SUCCESS. On failure, EXIT_FAILURE
  */
 
-int push(int num)
+int push(int num, stack_t **stack_top)
 {
 	stack_t *new = malloc(sizeof(stack_t));
 
@@ -17,14 +17,11 @@ int push(int num)
 		exit(EXIT_FAILURE);
 	}
 
-	new->prev = top;
+	new->prev = *stack_top;
 	new->n = num;
 	new->next = NULL;
 
-	top = new;
-
-	if (!head)
-		head = new;
+	*stack_top = new;
 
 	return (EXIT_SUCCESS);
 }
