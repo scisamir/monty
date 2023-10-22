@@ -16,15 +16,9 @@ void pall(stack_t **stack, unsigned int __attribute__((unused)) line_number)
 	if (ptr == NULL)
 		return;
 
-	while (ptr->prev != NULL)
+	while (ptr != NULL)
 	{
 		printf("%d\n", ptr->n);
 		ptr = ptr->prev;
 	}
-	printf("%d\n", ptr->n);
-
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-
-
 }

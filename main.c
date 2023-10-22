@@ -1,5 +1,29 @@
 #include "monty.h"
 
+stack_t *top = NULL;
+int lineno = 0;
+
+/**
+ * free_words - frees parse_line output
+ * @words: to be freed
+ *
+ * Return: Nothing
+ */
+
+void free_words(char **words)
+{
+	int i;
+
+	printf("In free");
+	if (words != NULL)
+	{
+		for (i = 0; words[i]; i++)
+			free(words[i]);
+		free(words);
+	}
+}
+
+
 /**
  * parse_line - splits each line of monty into an array of words
  * @str: the line to be splitted
@@ -91,9 +115,8 @@ int main(int ac, char *av[])
 	FILE *fd;
 	int lineno = 0/*, i = 0*/;
 	size_t len = 0;
-	ssize_t line_read;
+	/*ssize_t line_read;*/
 	char *line = NULL, **words = NULL;
-	stack_t *top = NULL;
 
 	if (ac != 2)
 	{
@@ -108,7 +131,8 @@ int main(int ac, char *av[])
 		exit(EXIT_FAILURE);
 	}
 
-	while ((line_read = getline(&line, &len, fd)) != -1)
+	/*while ((line_read = getline(&line, &len, fd)) != -1)*/
+	while (getline(&line, &len, fd) != -1)
 	{
 		lineno++;
 		words = parse_line(line);
@@ -119,6 +143,7 @@ int main(int ac, char *av[])
 			else
 				check_opcode(words[0], lineno, top);
 		}
+		free_words(words);
 	}
 
 	fclose(fd);
