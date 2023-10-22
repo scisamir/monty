@@ -1,8 +1,5 @@
 #include "monty.h"
 
-stack_t *top = NULL;
-int lineno = 0;
-
 /**
  * free_stack - free stack
  * @stack: the stack to be freed
@@ -14,11 +11,10 @@ void free_stack(stack_t **stack)
 {
 	stack_t *temp = NULL;
 
-	printf("In stack... free\n");
 	while (*stack != NULL)
 	{
 		temp = *stack;
-		*stack = (*stack)->next;
+		*stack = (*stack)->prev;
 		free(temp);
 	}
 }
@@ -35,7 +31,6 @@ void free_words(char **words)
 {
 	int i;
 
-	printf("In free\n");
 	if (words != NULL)
 	{
 		for (i = 0; words[i]; i++)
@@ -137,6 +132,7 @@ int main(int ac, char *av[])
 	int lineno = 0;
 	size_t len = 0;
 	char *line = NULL, **words = NULL;
+	stack_t *top = NULL;
 
 	if (ac != 2)
 	{

@@ -12,7 +12,7 @@
 int push(char *num_char, stack_t **stack_top, int lineno)
 {
 	int num;
-	stack_t *new = malloc(sizeof(stack_t));
+	stack_t *new = NULL;
 
 	if (strspn(num_char, "0123456789") != strlen(num_char))
 	{
@@ -22,6 +22,7 @@ int push(char *num_char, stack_t **stack_top, int lineno)
 
 	num = atoi(num_char);
 
+	new = malloc(sizeof(stack_t));
 	if (new == NULL)
 	{
 		dprintf(2, "Error: malloc failed\n");
