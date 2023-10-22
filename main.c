@@ -134,9 +134,8 @@ void check_opcode(char *str, int lineno, stack_t *stack)
 int main(int ac, char *av[])
 {
 	FILE *fd;
-	int lineno = 0/*, i = 0*/;
+	int lineno = 0;
 	size_t len = 0;
-	/*ssize_t line_read;*/
 	char *line = NULL, **words = NULL;
 
 	if (ac != 2)
@@ -152,7 +151,6 @@ int main(int ac, char *av[])
 		exit(EXIT_FAILURE);
 	}
 
-	/*while ((line_read = getline(&line, &len, fd)) != -1)*/
 	while (getline(&line, &len, fd) != -1)
 	{
 		lineno++;
@@ -167,6 +165,7 @@ int main(int ac, char *av[])
 		free_words(words);
 	}
 
+	free(line);
 	free_stack(&top);
 	fclose(fd);
 	exit(EXIT_SUCCESS);
