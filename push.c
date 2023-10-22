@@ -2,7 +2,6 @@
 
 /**
  * push_err - handles wrong push command
- * @stack: the stack
  * @line_num: current line number of the bytecode file being read
  *
  * Return: Nothing
