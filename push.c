@@ -8,9 +8,8 @@
  * Return: Nothing
  */
 
-int push_err(stack_t *stack, int line_num)
+int push_err(int line_num)
 {
-	free_stack(&stack);
 	dprintf(2, "L%d: usage: push integer\n", line_num);
 	return (EXIT_FAILURE);
 }
@@ -31,10 +30,10 @@ int push(char *num_char, stack_t **stack_top, int lineno)
 	stack_t *new = NULL;
 
 	if (!num_char)
-		return (push_err(*stack_top, lineno));
+		return (push_err(lineno));
 
 	if (strspn(num_char, "-0123456789") != strlen(num_char))
-		return (push_err(*stack_top, lineno));
+		return (push_err(lineno));
 
 	num = atoi(num_char);
 
