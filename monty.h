@@ -42,10 +42,13 @@ typedef struct instruction_s
 
 
 char **parse_line(char *str);
-void check_opcode(char *str, int lineno, stack_t *stack);
+int check_opcode(char *str, int lineno, stack_t *stack);
 int push(char *num_char, stack_t **stack_top, int lineno);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
+
+void free_stack(stack_t **stack);
+void free_words(char **words);
 
 #endif /* __MONTY_H__ */

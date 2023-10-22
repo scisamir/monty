@@ -1,46 +1,6 @@
 #include "monty.h"
 
 /**
- * free_stack - free stack
- * @stack: the stack to be freed
- *
- * Return: Nothing
- */
-
-void free_stack(stack_t **stack)
-{
-	stack_t *temp = NULL;
-
-	while (*stack != NULL)
-	{
-		temp = *stack;
-		*stack = (*stack)->prev;
-		free(temp);
-	}
-}
-
-
-/**
- * free_words - frees parse_line output
- * @words: to be freed
- *
- * Return: Nothing
- */
-
-void free_words(char **words)
-{
-	int i;
-
-	if (words != NULL)
-	{
-		for (i = 0; words[i]; i++)
-			free(words[i]);
-		free(words);
-	}
-}
-
-
-/**
  * parse_line - splits each line of monty into an array of words
  * @str: the line to be splitted
  *
@@ -92,7 +52,7 @@ char **parse_line(char *str)
  * Return: Nothing
  */
 
-void check_opcode(char *str, int lineno, stack_t *stack)
+int check_opcode(char *str, int lineno, stack_t *stack)
 {
 	int i = 0;
 
@@ -108,13 +68,13 @@ void check_opcode(char *str, int lineno, stack_t *stack)
 		if (strcmp(opcodes[i].opcode, str) == 0)
 		{
 			(opcodes[i].f)(&stack, lineno);
-			return;
+			return (EXIT_SUCCESS);
 		}
 		i++;
 	}
 
 	dprintf(2, "L%d: unknown instruction %s\n", lineno, str);
-	exit(EXIT_FAILURE);
+	return (EXIT_FAILURE);
 }
 
 
@@ -129,7 +89,7 @@ void check_opcode(char *str, int lineno, stack_t *stack)
 int main(int ac, char *av[])
 {
 	FILE *fd;
-	int lineno = 0;
+	int lineno = 0, fail_check = 0;
 	size_t len = 0;
 	char *line = NULL, **words = NULL;
 	stack_t *top = NULL;
@@ -151,18 +111,20 @@ int main(int ac, char *av[])
 	{
 		lineno++;
 		words = parse_line(line);
-		if (words)
+		if (words && words[0])
 		{
 			if (strcmp(words[0], "push") == 0)
-				push(words[1], &top, lineno);
+				fail_check = push(words[1], &top, lineno);
 			else
-				check_opcode(words[0], lineno, top);
+				fail_check = check_opcode(words[0], lineno, top);
 		}
-		free_words(words);
+		free_words(words), words = NULL;
+		if (fail_check)
+			break;
 	}
 
-	free(line);
-	free_stack(&top);
-	fclose(fd);
+	free(line), free_stack(&top), fclose(fd);
+	if (fail_check)
+		exit(EXIT_FAILURE);
 	exit(EXIT_SUCCESS);
 }
