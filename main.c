@@ -60,8 +60,13 @@ int check_opcode(char *str, int lineno, stack_t *stack)
 		{"pall", pall},
 		{"pint", pint},
 		{"pop", pop},
+		{"swap", swap},
+		{"add", add},
 		{NULL, NULL},
 	};
+
+	if (strcmp(str, "nop") == 0)
+		return (EXIT_SUCCESS);
 
 	while (opcodes[i].opcode)
 	{

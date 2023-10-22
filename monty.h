@@ -47,6 +47,8 @@ int push(char *num_char, stack_t **stack_top, int lineno);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);
 void pop(stack_t **stack, unsigned int line_number);
+void swap(stack_t **stack, unsigned int lineno);
+void add(stack_t **stack, unsigned int lineno);
 
 void free_stack(stack_t **stack);
 void free_words(char **words);
