@@ -4,6 +4,27 @@ stack_t *top = NULL;
 int lineno = 0;
 
 /**
+ * free_stack - free stack
+ * @stack: the stack to be freed
+ *
+ * Return: Nothing
+ */
+
+void free_stack(stack_t **stack)
+{
+	stack_t *temp = NULL;
+
+	printf("In stack... free\n");
+	while (*stack != NULL)
+	{
+		temp = *stack;
+		*stack = (*stack)->next;
+		free(temp);
+	}
+}
+
+
+/**
  * free_words - frees parse_line output
  * @words: to be freed
  *
@@ -14,7 +35,7 @@ void free_words(char **words)
 {
 	int i;
 
-	printf("In free");
+	printf("In free\n");
 	if (words != NULL)
 	{
 		for (i = 0; words[i]; i++)
@@ -146,6 +167,7 @@ int main(int ac, char *av[])
 		free_words(words);
 	}
 
+	free_stack(&top);
 	fclose(fd);
 	exit(EXIT_SUCCESS);
 }
