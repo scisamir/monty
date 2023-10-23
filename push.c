@@ -47,6 +47,9 @@ int push(char *num_char, stack_t **stack_top, int lineno)
 	new->n = num;
 	new->next = NULL;
 
+	if (*stack_top != NULL)
+		(*stack_top)->next = new;
+
 	*stack_top = new;
 
 	return (EXIT_SUCCESS);
