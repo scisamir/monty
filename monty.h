@@ -42,7 +42,7 @@ typedef struct instruction_s
 
 
 char **parse_line(char *str);
-int check_opcode(char *str, int lineno, stack_t *stack);
+int check_opcode(char *str, int lineno, stack_t **stack);
 int push(char *num_char, stack_t **stack_top, int lineno);
 void pall(stack_t **stack, unsigned int line_number);
 void pint(stack_t **stack, unsigned int line_number);

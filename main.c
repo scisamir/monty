@@ -52,7 +52,7 @@ char **parse_line(char *str)
  * Return: Nothing
  */
 
-int check_opcode(char *str, int lineno, stack_t *stack)
+int check_opcode(char *str, int lineno, stack_t **stack)
 {
 	int i = 0;
 
@@ -72,7 +72,7 @@ int check_opcode(char *str, int lineno, stack_t *stack)
 	{
 		if (strcmp(opcodes[i].opcode, str) == 0)
 		{
-			(opcodes[i].f)(&stack, lineno);
+			(opcodes[i].f)(stack, lineno);
 			return (EXIT_SUCCESS);
 		}
 		i++;
@@ -121,7 +121,7 @@ int main(int ac, char *av[])
 			if (strcmp(words[0], "push") == 0)
 				fail_check = push(words[1], &top, lineno);
 			else
-				fail_check = check_opcode(words[0], lineno, top);
+				fail_check = check_opcode(words[0], lineno, &top);
 		}
 		free_words(words), words = NULL;
 		if (fail_check)
